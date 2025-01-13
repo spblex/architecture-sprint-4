@@ -1,0 +1,25 @@
+@startuml
+
+title Изменение статуса заказа
+
+participant user [
+    =Initiator
+    ----
+    ""User or MQ""
+]
+participant "MES API" as mes
+participant "MES DB" as db
+participant cache [
+    =Cache
+    ----
+    ""Redis""
+]
+
+user -> mes: Обновить статус заказа
+mes -> db: Обновить статус заказа
+db -> mes: response: <font color=green><b>OK</b>
+mes -> cache: Обновить статус заказа
+cache -> mes: response: <font color=green><b>OK</b>
+mes -> user: <font color=green><b>200 OK</b>
+
+@enduml

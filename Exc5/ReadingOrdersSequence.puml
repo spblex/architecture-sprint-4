@@ -1,0 +1,39 @@
+@startuml
+title Чтение списка заказов
+
+actor "Пользователь" as user
+participant browser [
+    =Browser
+    ----
+    ""MES""
+]
+participant "MES API" as mes
+participant cache [
+    =Cache
+    ----
+    ""Redis""
+]
+participant "MES DB" as db
+
+user -> browser: Получить список заказов
+browser -> browser: no-cache,\nno-store,\nmust-revalidate
+browser -> mes: Получить список заказов
+mes -> cache: Получить список заказов
+cache -> mes: Список заказов
+alt <font color=red>Cache miss<font color=black>
+    mes -> db: Получить список заказов
+    db -> mes: Спиcок заказов
+    mes -> cache: Обновить список заказов
+    cache -> mes: response: <font color=green><b>OK</b>
+end
+mes -> browser: Спиcок заказов
+browser -> user: Спиcок заказов
+
+== Ассинхронно по рассписанию (Refresh-ahead) ==
+loop
+    mes -> db: Получить список заказов
+    db -> mes: Спиcок заказов
+    mes -> cache: Обновить список заказов
+    cache -> mes: response: <font color=green><b>OK</b>
+end
+@enduml

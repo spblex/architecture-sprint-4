@@ -46,3 +46,7 @@
   * Список товаров - вместо прямого обращения к базе Shop DB, переключаемся на использование Shop API к которому уже подключили кэш
 * MES API
   * Статусы заказов - так же как и в Shop API используем Cache-Aside + Refresh-ahead на базе Radis
+
+Чтение списка заказов [ReadingOrdersSequence.puml](ReadingOrdersSequence.puml)
+
+Изменение статуса заказа [UpdateOrederStateSeqence.puml](UpdateOrederStateSeqence.puml)
